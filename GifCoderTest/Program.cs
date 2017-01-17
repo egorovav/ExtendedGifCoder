@@ -23,7 +23,7 @@ namespace GifCoderTest
 
 			for (int i = 0; i < _gifCoder.Frames.Count; i++) 
 			{
-				_gifCoder.Frames[i].Delay = i % 22;
+				_gifCoder.Frames[i].Delay = i % 21;
 			}
 
 			var _outputFileName = "truck_crush_slow_mo.gif";
