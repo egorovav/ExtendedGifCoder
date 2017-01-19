@@ -35,37 +35,29 @@ namespace Ja2DataImage
 
 		private void CalculateScreenSize()
 		{
+			int _minOffsetX = Int32.MaxValue;
+			int _minOffsetY = Int32.MaxValue;
+			var maxBottomShifted = this.Frames[0];
+			var maxRightShifted = this.Frames[0];
+
 			foreach (var _frame in this.Frames)
 			{
-				int _curWidth = _frame.Width;
-				int _curHeight = _frame.Height;
+				_minOffsetX = Math.Min(_minOffsetX, _frame.OffsetX);
+				_minOffsetY = Math.Min(_minOffsetY, _frame.OffsetY);
 
-				if (_frame.OffsetX > 0)
-					_curWidth += _frame.OffsetX;
-				else
-				{
-					int _absShift = Math.Abs(_frame.OffsetX);
-					if (_absShift > this.FShiftX) this.FShiftX = _absShift;
-				}
-				if (_frame.OffsetY > 0)
-					_curHeight += _frame.OffsetY;
-				else
-				{
-					int _absShift = Math.Abs(_frame.OffsetY);
-					if (_absShift > this.FShiftY) this.FShiftY = _absShift;
-				}
-				if (_curWidth > this.FScreenWidth) this.FScreenWidth = (UInt16)_curWidth;
-				if (_curHeight > this.FScreenHeight) this.FScreenHeight = (UInt16)_curHeight;
+				if (maxRightShifted.OffsetX + maxRightShifted.Width < _frame.Width + _frame.OffsetX)
+					maxRightShifted = _frame;
+
+				if (maxBottomShifted.OffsetX + maxBottomShifted.Height < _frame.Height + _frame.OffsetY)
+					maxBottomShifted = _frame;
 			}
 
-			this.FScreenHeight += (UInt16)this.FShiftY;
-			this.FScreenWidth += (UInt16)this.FShiftX;
+			this.FScreenWidth = (UInt16)(maxRightShifted.Width + maxRightShifted.OffsetX - _minOffsetX);
+			this.FScreenHeight = (UInt16)(maxBottomShifted.Height + maxBottomShifted.OffsetY - _minOffsetY);
 		}
 
 		private UInt16 FScreenWidth;
 		private UInt16 FScreenHeight;
-		private int FShiftX;
-		private int FShiftY;
 
 		private int Flags
 		{
