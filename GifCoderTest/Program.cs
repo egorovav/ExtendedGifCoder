@@ -1,4 +1,4 @@
-﻿using Ja2DataImage;
+﻿using ExtendedGifEncoder;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Ja2DataImage
+namespace ExtendedGifEncoder
 {
 	public class GifBitmapCoder
 	{
@@ -24,7 +24,7 @@ namespace Ja2DataImage
 
 		public List<GifBitmapFrame> Frames = new List<GifBitmapFrame>();
 		private BitmapPalette FGlobalPalette;
-		public List<GifExtension> Extentions = new List<GifExtension>();
+		public List<GifExtension> Extensions = new List<GifExtension>();
 
 		private byte FBackgroundColorIndex;
 
@@ -105,11 +105,11 @@ namespace Ja2DataImage
 				}
 			}
 
-			foreach (var _extension in this.Extentions)
+			foreach (var _extension in this.Extensions)
 				_extension.Save(aStream);
 
 			foreach (var _frame in this.Frames)
-				_frame.Save(aStream); //, this.FShiftX, this.FShiftY);
+				_frame.Save(aStream);
 
 			aStream.WriteByte(Terminator); 
 		}
@@ -151,7 +151,7 @@ namespace Ja2DataImage
 			while((_extension = GifExtension.Load(aStream)) != null && 
 				_extension.ExtensionType != ExtensionType.ImageBehaviorExtension)
 			{
-				this.Extentions.Add(_extension);
+				this.Extensions.Add(_extension);
 			}
 
 			for (int i = 0; i < _decoder.Frames.Count; i++)

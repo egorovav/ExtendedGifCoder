@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace Ja2DataImage
+namespace ExtendedGifEncoder
 {
 	public enum GifFrameDisposalMethod
 	{
@@ -30,7 +30,7 @@ namespace Ja2DataImage
 			this.FFrame = aFrame;
 		}
 
-		public GifBitmapFrame(BitmapFrame aFrame, Int16 aOffsetX, Int16 aOffsetY)
+		public GifBitmapFrame(BitmapFrame aFrame, UInt16 aOffsetX, UInt16 aOffsetY)
 			: this(aFrame)
 		{
 			this.FOffsetX = aOffsetX;
@@ -43,14 +43,14 @@ namespace Ja2DataImage
 			get { return this.FFrame; }
 		}
 
-		private Int16 FOffsetX;
-		public Int16 OffsetX
+		private UInt16 FOffsetX;
+		public UInt16 OffsetX
 		{
 			get { return this.FOffsetX; }
 		}
 
-		private Int16 FOffsetY;
-		public Int16 OffsetY
+		private UInt16 FOffsetY;
+		public UInt16 OffsetY
 		{
 			get { return this.FOffsetY; }
 		}
@@ -165,7 +165,7 @@ namespace Ja2DataImage
 			get { return this.FFrame.Format.BitsPerPixel; }
 		}
 
-		public void Save(Stream aStream) //, int aShiftX, int aShiftY)
+		public void Save(Stream aStream)
 		{
 			this.BehaviorExtention.Save(aStream);
 
@@ -175,8 +175,6 @@ namespace Ja2DataImage
 			aStream.WriteByte(Separator);
 
 			var _bw = new BinaryWriter(aStream);
-			//_bw.Write((UInt16)(this.FOffsetX + aShiftX));
-			//_bw.Write((UInt16)(this.FOffsetY + aShiftY));
 			_bw.Write(this.FOffsetX);
 			_bw.Write(this.FOffsetY);
 			_bw.Write((UInt16)this.Width);
@@ -225,8 +223,8 @@ namespace Ja2DataImage
 			}
 
 			var _br = new BinaryReader(aStream);
-			this.FOffsetX = _br.ReadInt16();
-			this.FOffsetY = _br.ReadInt16();
+			this.FOffsetX = _br.ReadUInt16();
+			this.FOffsetY = _br.ReadUInt16();
 			_br.ReadUInt16();					// don't store width, get from frame
 			_br.ReadUInt16();					// don't store heiht, get from frame
 			this.ImageFlags = _br.ReadByte();
@@ -304,8 +302,8 @@ namespace Ja2DataImage
 			int _width = _right - _left;
 			int _height = _bottom - _top;
 
-			this.FOffsetX += (short)(_left - this.Frame.Width / 2);
-			this.FOffsetY += (short)(_top - this.Frame.Height / 2);
+			this.FOffsetX += (ushort)(_left - this.Frame.Width / 2);
+			this.FOffsetY += (ushort)(_top - this.Frame.Height / 2);
 
 			byte[] trimedData = new byte[_width * _height];
 			this.Frame.CopyPixels(new Int32Rect(_left, _top, _width, _height), trimedData, _width, 0);

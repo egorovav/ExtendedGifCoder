@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Ja2DataImage
+namespace ExtendedGifEncoder
 {
 	public enum ExtensionType : byte
 	{
