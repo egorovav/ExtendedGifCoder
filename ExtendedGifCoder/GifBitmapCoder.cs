@@ -117,7 +117,7 @@ namespace Ja2DataImage
 				_extension.Save(aStream);
 
 			foreach (var _frame in this.Frames)
-				_frame.Save(aStream, this.FShiftX, this.FShiftY);
+				_frame.Save(aStream); //, this.FShiftX, this.FShiftY);
 
 			aStream.WriteByte(Terminator); 
 		}

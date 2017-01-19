@@ -165,7 +165,7 @@ namespace Ja2DataImage
 			get { return this.FFrame.Format.BitsPerPixel; }
 		}
 
-		public void Save(Stream aStream, int aShiftX, int aShiftY)
+		public void Save(Stream aStream) //, int aShiftX, int aShiftY)
 		{
 			this.BehaviorExtention.Save(aStream);
 
@@ -175,8 +175,10 @@ namespace Ja2DataImage
 			aStream.WriteByte(Separator);
 
 			var _bw = new BinaryWriter(aStream);
-			_bw.Write((UInt16)(this.FOffsetX + aShiftX));
-			_bw.Write((UInt16)(this.FOffsetY + aShiftY));
+			//_bw.Write((UInt16)(this.FOffsetX + aShiftX));
+			//_bw.Write((UInt16)(this.FOffsetY + aShiftY));
+			_bw.Write(this.FOffsetX);
+			_bw.Write(this.FOffsetY);
 			_bw.Write((UInt16)this.Width);
 			_bw.Write((UInt16)this.Height);
 			_bw.Write(this.ImageFlags);
