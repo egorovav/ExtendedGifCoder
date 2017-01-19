@@ -35,16 +35,11 @@ namespace ExtendedGifEncoder
 
 		private void CalculateScreenSize()
 		{
-			int _minOffsetX = Int32.MaxValue;
-			int _minOffsetY = Int32.MaxValue;
 			var maxBottomShifted = this.Frames[0];
 			var maxRightShifted = this.Frames[0];
 
 			foreach (var _frame in this.Frames)
 			{
-				_minOffsetX = Math.Min(_minOffsetX, _frame.OffsetX);
-				_minOffsetY = Math.Min(_minOffsetY, _frame.OffsetY);
-
 				if (maxRightShifted.OffsetX + maxRightShifted.Width < _frame.Width + _frame.OffsetX)
 					maxRightShifted = _frame;
 
@@ -52,8 +47,8 @@ namespace ExtendedGifEncoder
 					maxBottomShifted = _frame;
 			}
 
-			this.FScreenWidth = (UInt16)(maxRightShifted.Width + maxRightShifted.OffsetX - _minOffsetX);
-			this.FScreenHeight = (UInt16)(maxBottomShifted.Height + maxBottomShifted.OffsetY - _minOffsetY);
+			this.FScreenWidth = (UInt16)(maxRightShifted.Width + maxRightShifted.OffsetX);
+			this.FScreenHeight = (UInt16)(maxBottomShifted.Height + maxBottomShifted.OffsetY);
 		}
 
 		private UInt16 FScreenWidth;
