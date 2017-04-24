@@ -41,18 +41,21 @@ namespace ExtendedGifEncoder
 		public BitmapFrame Frame
 		{
 			get { return this.FFrame; }
+			set { this.FFrame = value; }
 		}
 
 		private UInt16 FOffsetX;
 		public UInt16 OffsetX
 		{
 			get { return this.FOffsetX; }
+			set { this.FOffsetX = value; }
 		}
 
 		private UInt16 FOffsetY;
 		public UInt16 OffsetY
 		{
 			get { return this.FOffsetY; }
+			set { this.FOffsetY = value; }
 		}
 
 		public List<GifExtension> Extensions = new List<GifExtension>();
@@ -252,9 +255,8 @@ namespace ExtendedGifEncoder
 		}
 
 		// Trim background pixels
-		public void Trim()
+		public void Trim(int aBackgroundColorIndex)
 		{
-			Color bc = this.Frame.Palette.Colors[0];
 			int _top = -1;
 			int _left = this.Frame.PixelWidth;
 			byte[] imageData = new byte[this.Frame.PixelWidth * this.Frame.PixelHeight];
@@ -265,8 +267,7 @@ namespace ExtendedGifEncoder
 				for (int j = 0; j < this.Frame.PixelWidth; j++)
 				{
 					byte colorIndex = imageData[i * this.Frame.PixelWidth + j];
-					Color c = this.Frame.Palette.Colors[colorIndex];
-					if (c != bc)
+					if (colorIndex != aBackgroundColorIndex)
 					{
 						if (_top < 0)
 							_top = i;
@@ -282,19 +283,20 @@ namespace ExtendedGifEncoder
 			int _bottom = this.Frame.PixelHeight;
 			int _right = 0;
 
-			for (int i = this.Frame.PixelHeight - 1; i > 0; i--)
+			for (int i = this.Frame.PixelHeight - 1; i >= 0; i--)
 			{
-				for (int j = this.Frame.PixelWidth - 1; j > 0; j--)
+				for (int j = this.Frame.PixelWidth - 1; j >= 0; j--)
 				{
 					byte colorIndex = imageData[i * this.Frame.PixelWidth + j];
-					Color c = this.Frame.Palette.Colors[colorIndex];
-					if (c != bc)
+					if (colorIndex != aBackgroundColorIndex)
 					{
 						if (_bottom == this.Frame.PixelHeight)
 							_bottom = i;
 
 						if (_right < j)
 							_right = j;
+
+						continue;
 					}
 				}
 			}
@@ -302,8 +304,11 @@ namespace ExtendedGifEncoder
 			int _width = _right - _left;
 			int _height = _bottom - _top;
 
-			this.FOffsetX += (ushort)(_left - this.Frame.Width / 2);
-			this.FOffsetY += (ushort)(_top - this.Frame.Height / 2);
+			// this.FOffsetX += (ushort)(_left - this.Frame.Width / 2);
+			// this.FOffsetY += (ushort)(_top - this.Frame.Height / 2);
+
+			this.FOffsetX += (ushort)_left;
+			this.FOffsetY += (ushort)_top;
 
 			byte[] trimedData = new byte[_width * _height];
 			this.Frame.CopyPixels(new Int32Rect(_left, _top, _width, _height), trimedData, _width, 0);

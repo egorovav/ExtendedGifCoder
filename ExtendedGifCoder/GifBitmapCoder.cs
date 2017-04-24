@@ -27,6 +27,10 @@ namespace ExtendedGifEncoder
 		public List<GifExtension> Extensions = new List<GifExtension>();
 
 		private byte FBackgroundColorIndex;
+		public byte BackgroundColorIndex
+		{
+			get { return this.FBackgroundColorIndex; }
+		}
 
 		public void AddFrame(GifBitmapFrame aFrame)
 		{
@@ -43,7 +47,7 @@ namespace ExtendedGifEncoder
 				if (maxRightShifted.OffsetX + maxRightShifted.Width < _frame.Width + _frame.OffsetX)
 					maxRightShifted = _frame;
 
-				if (maxBottomShifted.OffsetX + maxBottomShifted.Height < _frame.Height + _frame.OffsetY)
+				if (maxBottomShifted.OffsetY + maxBottomShifted.Height < _frame.Height + _frame.OffsetY)
 					maxBottomShifted = _frame;
 			}
 
